@@ -1,8 +1,6 @@
 var http = require('http');
 var common = require('./common');
 
-common.options.path = '/day/1/input';
-
 function parseResult(result) {
   var floor = 0, firstGroundIndex = 0;
   console.log(result.length);
@@ -20,18 +18,6 @@ function parseResult(result) {
   console.log(firstGroundIndex);
 }
 
-var r = http.get(common.options, function(response) {
-  var result = '';
-
-  response.on('data', function(data) {
-    result += data;
-  });
-
-  response.on('end', function () {
-    parseResult(result);
-  });
-});
-
-r.on('error', function (error) {
-  console.error('error', error);
+common.getInput(1, function(result) {
+  parseResult(result);
 });

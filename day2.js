@@ -1,9 +1,6 @@
 var http = require('http');
 var common = require('./common');
 
-common.options.path = '/day/2/input';
-console.log(common.options);
-
 function parseResult(result) {
   var lines = result.split('\n'),
       paperSum = 0, ribbonSum = 0, l, w, h, i, line;
@@ -39,18 +36,6 @@ function parseResult(result) {
   console.log(ribbonSum);
 }
 
-var r = http.get(common.options, function(response) {
-  var result = '';
-
-  response.on('data', function(data) {
-    result += data;
-  });
-
-  response.on('end', function () {
-    parseResult(result);
-  });
-});
-
-r.on('error', function (error) {
-  console.error(error);
+common.getInput(2, function(result) {
+  parseResult(result);
 });
