@@ -1,10 +1,13 @@
-var http = require('http');
-var common = require('./common');
+'use strict';
+
+const http = require('http'),
+      common = require('./common');
 
 function parseResult(result) {
-  var floor = 0, firstGroundIndex = 0;
+  let floor = 0, firstGroundIndex = 0;
   console.log(result.length);
-  for (i = 0; i < result.length; i++) {
+
+  for (let i = 0; i < result.length; i++) {
     if (result[i] === '(') {
       floor++;
     } else {
@@ -18,6 +21,6 @@ function parseResult(result) {
   console.log(firstGroundIndex);
 }
 
-common.getInput(1, function(result) {
-  parseResult(result);
-});
+common.getInput(1)
+  .then((result) => parseResult(result))
+  .catch((error) => console.error(error));
