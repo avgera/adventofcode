@@ -11,18 +11,31 @@ exports.getInput = function(day) {
 
   console.log(options);
 
-  const rl = readline.createInterface(process.stdin, process.stdout);
+  function getCookie() {
+    if (process.env.COOKIE) {
+      return new Promise((resolve, reject) => {
+        resolve(process.env.COOKIE);
+      });
+    }
 
-  rl.setPrompt('COOKIE> ');
-  rl.prompt();
+    const rl = readline.createInterface(process.stdin, process.stdout);
+
+    rl.setPrompt('COOKIE> ');
+    rl.prompt();
+
+    return new Promise((resolve, reject) => {
+      rl.on('line', (line) => {
+        resolve(line);
+        rl.close();
+      });
+    });
+  }
 
   return new Promise((resolve, reject) => {
-    rl.on('line', (line) => {
+    getCookie().then((line) => {
       options.headers = {
         'Cookie': line.trim()
       };
-
-      rl.close();
 
       const req = http.get(options, (response) => {
         let result = '';
