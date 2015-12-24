@@ -19,7 +19,6 @@ function handleVisitedHouse(square, visited, coords) {
 
   if (visitedHouse && !visitedMore) {
     visited.push(visitedHouse);
-    console.log('visited house', visited);
   }
 }
 
@@ -27,9 +26,9 @@ function parseResult(result) {
   const square = [], visited = [];
   let coords = { x: 0, y: 0 };;
 
-  for (let i = 0; i < result.length; i++) {
-    handleVisitedHouse(square, visited, coords);
+  handleVisitedHouse(square, visited, coords);
 
+  for (let i = 0; i < result.length; i++) {
     switch (result[i]) {
       case north:
         coords.x++;
@@ -44,66 +43,60 @@ function parseResult(result) {
         coords.y--;
         break;
     }
+    handleVisitedHouse(square, visited, coords);
   }
   console.log('visisted houses', visited.length);
 }
 
 function parseResultWithRoboSanta(result) {
   const square = [], visited = [];
-  let coords = { x: 0, y: 0 };;
+  let santaCoords = { x: 0, y: 0 },
+      roboSantaCoords = { x: 0, y: 0 };
+
+  handleVisitedHouse(square, visited, santaCoords);
+  handleVisitedHouse(square, visited, roboSantaCoords);
 
   for (let i = 0; i < result.length; i++) {
-    handleVisitedHouse(square, visited, coords);
-
     switch (result[i]) {
       case north:
         if (i % 2 === 0) {
-          coords.x++;
-          console.log('Santa');
+          santaCoords.x++;
         } else {
-          coords.x--;
-          console.log('Robo-Santa');
+          roboSantaCoords.x++;
         }
         break;
       case south:
         if (i % 2 === 0) {
-          coords.x--;
-          console.log('Santa');
+          santaCoords.x--;
         } else {
-          coords.x++;
-          console.log('Robo-Santa');
+          roboSantaCoords.x--;
         }
         break;
       case east:
         if (i % 2 === 0) {
-          coords.y++;
-          console.log('Santa');
+          santaCoords.y++;
         } else {
-          coords.y--;
-          console.log('Robo-Santa');
+          roboSantaCoords.y++;
         }
         break;
       case west:
         if (i % 2 === 0) {
-          coords.y--;
-          console.log('Santa');
+          santaCoords.y--;
         } else {
-          coords.y++;
-          console.log('Robo-Santa');
+          roboSantaCoords.y--;
         }
         break;
     }
-    console.log(coords);
+
+    handleVisitedHouse(square, visited, santaCoords);
+    handleVisitedHouse(square, visited, roboSantaCoords);
   }
-  console.log('visisted houses', visited.length + 1);
+  console.log('visisted houses', visited.length);
 }
 
 common.getInput(3)
   .then((result) => {
-    //parseResult(result);
-    parseResultWithRoboSanta('^v');
-    parseResultWithRoboSanta('^>v<');
-    parseResultWithRoboSanta('^v^v^v^v^v');
-    //parseResultWithRoboSanta(result);
+    parseResult(result);
+    parseResultWithRoboSanta(result);
   })
   .catch((error) => console.error(error));
